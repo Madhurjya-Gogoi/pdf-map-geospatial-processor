@@ -1,0 +1,74 @@
+# db_config.example.txt
+#
+# NOT read by any script automatically. For now this project uses a plain
+# FILE STORE: every extraction just writes a .geojson (+ report + preview
+# PNG) into data/output/, and that's a perfectly good, queryable data store
+# on its own -- geopandas, QGIS, a web map (Leaflet/Mapbox), or a one-line
+# `jq` command can all read it directly. No database is required to use
+# this project.
+#
+# This file exists so that WHEN you do want a real database later, the
+# connection settings are written down in one place and copy-pasteable
+# straight into the db_import.py commands in README.md ("Step E"). Copy
+# this file to db_config.txt (already git-ignored), fill in your real
+# values, and paste the matching line into the --conn flag below.
+#
+# db_import.py never reads this file -- it only reads whatever you pass on
+# the command line. Treat this purely as your own notes.
+
+# ---------------------------------------------------------------------------
+# Option 1: PostGIS (PostgreSQL + the PostGIS extension)
+# ---------------------------------------------------------------------------
+# Fill in and use the resulting line as --conn:
+#   postgresql://<DB_USER>:<DB_PASSWORD>@<DB_HOST>:<DB_PORT>/<DB_NAME>
+#
+# DB_HOST=localhost
+# DB_PORT=5432
+# DB_NAME=mydatabase
+# DB_USER=myuser
+# DB_PASSWORD=changeme
+# DB_TABLE=agricultural_land
+#
+# Run:
+#   pip install -r requirements-db.txt
+#   python scripts/db_import.py data/output/banana_shire_agricultural.geojson \
+#       --backend postgis \
+#       --conn "postgresql://myuser:changeme@localhost:5432/mydatabase" \
+#       --table agricultural_land --if-exists replace
+
+# ---------------------------------------------------------------------------
+# Option 2: GeoPackage (single local .gpkg file -- no server, easiest option)
+# ---------------------------------------------------------------------------
+# GPKG_OUT_PATH=data/output/banana_shire_agricultural.gpkg
+# GPKG_TABLE=agricultural_land
+#
+# Run:
+#   pip install -r requirements-db.txt
+#   python scripts/db_import.py data/output/banana_shire_agricultural.geojson \
+#       --backend gpkg --out data/output/banana_shire_agricultural.gpkg \
+#       --table agricultural_land
+
+# ---------------------------------------------------------------------------
+# Option 3: MongoDB (each feature stored as a native GeoJSON document)
+# ---------------------------------------------------------------------------
+# Fill in and use the resulting line as --conn:
+#   mongodb://<DB_USER>:<DB_PASSWORD>@<DB_HOST>:<DB_PORT>
+#
+# DB_HOST=localhost
+# DB_PORT=27017
+# DB_USER=
+# DB_PASSWORD=
+# DB_NAME=mapdata
+# DB_COLLECTION=agricultural_land
+#
+# Run:
+#   pip install -r requirements-mongo.txt
+#   python scripts/db_import.py data/output/banana_shire_agricultural.geojson \
+#       --backend mongodb --conn "mongodb://localhost:27017" \
+#       --db mapdata --collection agricultural_land
+
+# ---------------------------------------------------------------------------
+# Switching later: nothing above needs to happen before you can use the
+# extractor. Run the pipeline, get your .geojson files in data/output/, and
+# only come back to this file the day you actually stand up a database.
+# ---------------------------------------------------------------------------

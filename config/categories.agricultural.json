@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Agricultural land",
+    "rgb": [230, 184, 44],
+    "style": "polygon",
+    "_note": "Goldenrod/orange fill, sampled from the map's own legend swatch"
+  },
+  {
+    "name": "Stock route",
+    "rgb": [0, 255, 0],
+    "style": "polygon",
+    "_note": "Pure green fill/line, sampled from the map's own legend swatch"
+  }
+]

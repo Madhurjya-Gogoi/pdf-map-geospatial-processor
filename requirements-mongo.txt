@@ -1,0 +1,5 @@
+# Optional: only needed if you use `db_import.py --backend mongodb`.
+#
+#   pip install -r requirements-mongo.txt
+
+pymongo>=4.6,<5.0
