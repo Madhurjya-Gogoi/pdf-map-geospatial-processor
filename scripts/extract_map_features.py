@@ -412,8 +412,14 @@ def main():
         log(f"[naming] output_geojson not given -> auto-named {output_geojson}", force=True)
     args.output_geojson = output_geojson
 
-    report_path = os.path.join(outdir, "extraction_report.json")
-    preview_path = os.path.join(outdir, "extraction_preview.png")
+    # Report + preview are named after whatever the geojson ended up being
+    # called (auto-named or explicit) so they never collide across overlays:
+    # banana_shire_agricultural.geojson -> ..._agricultural_report.json /
+    # ..._agricultural_preview.png, banana_shire_flood_zone.geojson -> its
+    # own pair, etc. Each run's three output files always share one prefix.
+    output_stem = os.path.splitext(os.path.basename(output_geojson))[0]
+    report_path = os.path.join(outdir, f"{output_stem}_report.json")
+    preview_path = os.path.join(outdir, f"{output_stem}_preview.png")
 
     report = {
         "source_file": os.path.abspath(args.input_tif),
